@@ -13,6 +13,7 @@ const respuestas = [
 ];
 
 let resultVoice = '';
+let record = false;
 
 window.onload = () => {
     console.log('Inicializando')
@@ -58,6 +59,7 @@ function startVoice(){
     textMode(false);
     clearRespuesta();
 
+    document.getElementById('microBtn').classList.add('active');
     document.getElementById('msg').innerHTML = 'Escuchando...';
 
     if (SPEECH.isCapable()) {
@@ -71,12 +73,26 @@ function startVoice(){
 function stopVoice(){
     //console.log('Paramos');
     document.getElementById('msg').innerHTML = '';
+    document.getElementById('microBtn').classList.remove('active');
+
     SPEECH.stop();
 
     if(resultVoice != ''){
         responder(resultVoice);
     }
     
+}
+
+function toogleAudioInput(){
+    if(record){
+        //Activo => desactivar
+        stopVoice();
+        record = false;
+    }else{
+        //Desactivado => activar
+        startVoice();
+        record = true;
+    }
 }
 
 function getPregunta(){

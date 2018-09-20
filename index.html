@@ -23,7 +23,7 @@
         <div id="start">
           <p>Pregunta: </p>
           <div class="btn-group" role="group">
-            <button onmousedown="startVoice()" onmouseup="stopVoice()" ontouchstart="startVoice()" ontouchend="stopVoice()" type="button" class="btn btn-outline-secondary"><i class="fas fa-microphone" style="font-size: 4em"></i></button>
+            <button onclick="toogleAudioInput()" type="button" id="microBtn" class="btn btn-outline-secondary"><i class="fas fa-microphone" style="font-size: 4em"></i></button>
             <button onclick="textMode(true)" type="button" class="btn btn-outline-secondary"><i class="fas fa-keyboard" style="font-size: 3em"></i></button>
           </div>
           <p><span id='msg'></span></p>
