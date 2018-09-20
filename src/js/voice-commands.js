@@ -139,6 +139,7 @@
       var transcript = '';
       if ( ! event.results) {
         recognition.onend = null;
+        console.log('stopping')
         recognition.stop();
         return;
       }
@@ -146,20 +147,17 @@
       for (i = event.resultIndex; i < il; ++i) {
         var result = event.results[i];
         var confidence = result[0].confidence;
-        if (result.isFinal) {
-          transcript += result[0].transcript;
-        } else {
-          transcript += result[0].transcript;
-        }
+        transcript += result[0].transcript;
+        
       }
-      console.log(transcript, confidence);
+      console.log(transcript, confidence*100);
 
-      for (var c in commands) {
-        var cmd = commands[c];
-        if (transcript.match(cmd.command) && (confidence > cmd.min_confidence)) {
-          executeVoiceCommand(cmd.callback);
-        }
-      }
+      // for (var c in commands) {
+      //   var cmd = commands[c];
+      //   if (transcript.match(cmd.command) && (confidence > cmd.min_confidence)) {
+      //     executeVoiceCommand(cmd.callback);
+      //   }
+      // }
 
       SPEECH._onResult({
         transcript: transcript,

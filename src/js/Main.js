@@ -12,8 +12,10 @@ const respuestas = [
     'Muy dudoso'
 ];
 
+const minPression = .3;
 let resultVoice = '';
 let record = false;
+let statePregAudio = false
 
 window.onload = () => {
     console.log('Inicializando')
@@ -25,9 +27,11 @@ function initVoice(){
 
         SPEECH.onResult(function(result) {
             // result.transcript is the object built by the speech recognition engine.
-            console.log('Entendi ' ,result.transcript);
+            console.log('Entendi ' ,result.transcript, result.confidence);
 
-            resultVoice = result.transcript;
+            if(result.confidence >= minPression){
+                resultVoice = result.transcript;
+            }
         });
 
         SPEECH.onStart(function() {
@@ -48,6 +52,9 @@ function onlyTextMode(){
 function textMode(setTo){
     if(setTo){
         //mostramos el metodo
+        clearPregunta();
+        clearRespuesta();
+        
         document.getElementById('textMode').style.display = 'block';
     }else{
         //ocultamos el metodo
@@ -58,14 +65,25 @@ function textMode(setTo){
 function startVoice(){
     textMode(false);
     clearRespuesta();
+    clearPregunta();
+
     resultVoice = '';
-    
+
     document.getElementById('microBtn').classList.add('active');
     document.getElementById('msg').innerHTML = 'Escuchando...';
 
     if (SPEECH.isCapable()) {
+
+        SPEECH.onResult(function(result) {
+            if(result.confidence >= minPression){
+                resultVoice = result.transcript;
+                document.getElementById('spPregunta').innerHTML = resultVoice;
+                toggleBtnAudioPreg();
+            }
+        });
+
         SPEECH.start({
-            min_confidence: .3,
+            min_confidence: minPression,
             lang: 'es-ES' 
         });  
     }
@@ -75,13 +93,16 @@ function stopVoice(){
     //console.log('Paramos');
     document.getElementById('msg').innerHTML = '';
     document.getElementById('microBtn').classList.remove('active');
-
-    SPEECH.stop();
-
-    if(resultVoice != ''){
-        responder(resultVoice);
-    }
     
+    SPEECH.stop();  
+}
+
+function toggleBtnAudioPreg(){
+    if(statePregAudio){
+        document.getElementById('btnPregAudio').style.display = 'none';
+    }else{
+        document.getElementById('btnPregAudio').style.display = 'inline';
+    }
 }
 
 function toogleAudioInput(){
@@ -93,6 +114,12 @@ function toogleAudioInput(){
         //Desactivado => activar
         startVoice();
         record = true;
+    }
+}
+
+function getPreguntaAudio(){
+    if(resultVoice != ''){
+        responder(resultVoice);
     }
 }
 
@@ -110,8 +137,8 @@ function getPregunta(){
 
 function respuestaTemplate(pregunta, respuesta) {
   return (
-   `<div><p>Tu pregunta fue: ${pregunta}</p><br>
-    <p>Mi respuesta es: ${respuesta}</p></div>`)
+   //<div><p>Tu pregunta fue: ${pregunta}</p><br>
+    `<p>Mi respuesta es: ${respuesta}</p></div>`)
 }
 
 function createTemplate(str) {
@@ -120,8 +147,15 @@ function createTemplate(str) {
   return html.body.children[0]
 }
 
+function clearPregunta(){
+    //Audio div
+    document.getElementById('btnPregAudio').style.display = 'none';
+    document.getElementById('spPregunta').innerHTML = '';
+}
+
 function clearRespuesta(){
     const respuestaDiv = document.getElementById('respuesta');
+
     //Vaciamos la respuesta
     if (respuestaDiv.children[0]) {
         respuestaDiv.children[0].remove()
