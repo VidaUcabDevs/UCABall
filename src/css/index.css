@@ -1,0 +1,13 @@
+*{
+  color: white;
+}
+.main{
+  background-color: #1e1e1e;
+  height: 100vh;
+  display: flex;
+}
+
+.mainArticle{
+  margin: auto;
+  text-align: center;
+}
