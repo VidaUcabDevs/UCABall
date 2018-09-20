@@ -6,8 +6,11 @@
     <title>UCABall</title>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="src/css/index.css">
+
     <script src="src/js/Main.js"></script>
+    <script src="src/js/voice-commands.js"></script>
 
 
 </head>
@@ -16,10 +19,24 @@
     <article class="mainArticle">
       <div class="container">
         <h2>UCABall</h2>
-        <input class="form-control" type="text" id="inputPregunta"><br>
-        <button type="button" class="btn btn-primary" onclick="getPregunta()">Preguntar</button><br>
-        <div id="respuesta" class="container">
-          
+
+        <div id="start">
+          <p>Pregunta: </p>
+          <div class="btn-group" role="group">
+            <button onmousedown="startVoice()" onmouseup="stopVoice()" ontouchstart="startVoice()" ontouchend="stopVoice()" type="button" class="btn btn-outline-secondary"><i class="fas fa-microphone" style="font-size: 4em"></i></button>
+            <button onclick="textMode(true)" type="button" class="btn btn-outline-secondary"><i class="fas fa-keyboard" style="font-size: 3em"></i></button>
+          </div>
+          <p><span id='msg'></span></p>
+        </div>
+
+        <div id="textMode" style="display: none">
+          <input class="form-control" type="text" id="inputPregunta" autofocus><br>
+          <button type="button" class="btn btn-primary" onclick="getPregunta()">Preguntar</button>
+          <br>
+        </div>
+        
+        <br>
+        <div id="respuesta" class="container">   
         </div>
       </div>
 
