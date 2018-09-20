@@ -58,7 +58,8 @@ function textMode(setTo){
 function startVoice(){
     textMode(false);
     clearRespuesta();
-
+    resultVoice = '';
+    
     document.getElementById('microBtn').classList.add('active');
     document.getElementById('msg').innerHTML = 'Escuchando...';
 
